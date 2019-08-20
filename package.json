@@ -1,0 +1,58 @@
+{
+  "name": "npm-setup",
+  "version": "1.0.0",
+  "description": "npm-setup",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "copy:tmp": "copyfiles -e \"./src/styles/_modules/*.scss\" -e \"./src/_**/*\" -e \"./src/**/_*\" -e \"./src/**/_*.{png,jpg,gif,svg,ico,js,scss}\" -u 1 \"./src/fonts/**/*.otf\" \"./src/assets/**\" \"./src/**/*.html\" \"./src/*.html\" \"./src/scripts/*.js\" \"./src/scripts/**\" \"./src/**/*.{png,jpg,gif,svg,ico}\" \"tmp\"",
+    "copy:build": "copyfiles -e \"./src/styles/_modules/*.scss\" -e \"./src/_**/*\" -e \"./src/**/_*\" -e \"./src/**/_*.{svg,ico,js,scss}\" -u 1 \"./src/fonts/**/*.otf\" \"./src/assets/**\" \"./src/**/*.html\" \"./src/*.html\" \"./src/scripts/*.js\" \"./src/scripts/**\" \"dist\" && npm run copy:node",
+    "copy:node": "copyfiles -u '' server.js package.json \"dist\"",
+    "scss": "./bin/scss",
+    "concat:js": "./bin/concat:js",
+    "cssmin": "./bin/cssmin",
+    "uglify": "./bin/uglify",
+    "htmlmin": "./bin/htmlmin",
+    "imagemin": "./bin/imagemin",
+    "onchange": "./bin/onchange",
+    "tmp:css": "node-sass -o tmp/styles/ src/styles/",
+    "tmp:js": "mkdir -p tmp/scripts && concat -o tmp/scripts/main.js ./src/scripts/main.js && concat -o tmp/scripts/vendor.js ./src/scripts/_vendor/*.js",
+    "build:replace": "./bin/replace",
+    "build:html": "npm run htmlmin",
+    "build:css": "npm run scss && npm run cssmin",
+    "build:js": "npm run concat:js && npm run uglify",
+    "build:images": "npm run imagemin",
+    "clean": "./bin/clean",
+    "build": "del dist && npm run copy:build && npm run build:css && npm run build:js && npm run build:html && npm run build:images && npm run build:replace",
+    "tmp": "del tmp clean && npm run copy:tmp && npm run tmp:css && npm run tmp:js",
+    "serve:build": "npm run build && node dist/server.js",
+    "serve": "npm run tmp && node server.js | npm run onchange"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.comcast.com/UX-Prototype/npm-quick-setup"
+  },
+  "author": "csimek001c",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "express-http-proxy": "^1.2.0",
+    "imagemin-cli": "^3.0.0",
+    "imagemin-power-cli": "^3.0.0",
+    "onchange": "^3.3.0",
+    "reload": "^2.2.2",
+    "opn": "^5.3.0"
+  },
+  "devDependencies": {
+    "concat": "^1.0.3",
+    "copyfiles": "^2.0.0",
+    "del-cli": "^1.1.0",
+    "htmlmin": "0.0.7",
+    "imagemin-mozjpeg": "^7.0.0",
+    "minifier": "^0.8.1",
+    "node-sass": "^4.9.0",
+    "nodemon": "^1.17.3",
+    "opn": "^5.3.0",
+    "uglify-es": "^3.3.9"
+  }
+}
